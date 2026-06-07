@@ -1457,8 +1457,8 @@ async function runAllTechniques(){
   const progDiv = document.getElementById('runAllProgress');
   const output  = document.getElementById('outputText');
 
-  runBtn.disabled=true; allBtn.disabled=true;
-  allBtn.textContent='⏳ Running All…';
+  if(runBtn){ runBtn.disabled=true; }
+  if(allBtn){ allBtn.disabled=true; allBtn.textContent='⏳ Running All…'; }
   if(progDiv) progDiv.style.display='block';
 
   const techNames=['Zero-Shot','Few-Shot','Chain-of-Thought','ReAct'];
@@ -1482,7 +1482,7 @@ async function runAllTechniques(){
 
       if(data.error) throw new Error(data.error.message);
 
-      const text    = data.content[0].text;
+      const text    = data.content?.[0]?.text || '';
       const inTok   = data.usage?.input_tokens  || estTokens(prompt);
       const outTok  = data.usage?.output_tokens || estTokens(text);
       const cachedTok = data.usage?.cache_read_input_tokens || 0;
@@ -1520,8 +1520,8 @@ async function runAllTechniques(){
     if(i<3) await new Promise(r=>setTimeout(r,400));
   }
 
-  runBtn.disabled=false; allBtn.disabled=false;
-  allBtn.textContent='⚡ Run All 4 + Compare';
+  if(runBtn){ runBtn.disabled=false; }
+  if(allBtn){ allBtn.disabled=false; allBtn.textContent='⚡ Run All 4 + Compare'; }
   updateCacheStatusBar();
 }
 
